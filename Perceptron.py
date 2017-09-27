@@ -53,7 +53,7 @@ class Perceptron(object):
             errors = 0
             for xi, target in zip(X, y):
                 update = self.eta * (target - \
-                                     self.predict())
+                                     self.predict(xi))
                 self.w_[1:] += update * xi
                 self.w_[0] += update
                 errors += int(update != 0.0)
@@ -67,6 +67,7 @@ class Perceptron(object):
     def predict(self, X):
         """Klassenbezeichnung zurückgeben"""
         return np.where(self.net_input(X) >= 0.0, 1, -1)
+    
         
     
             
