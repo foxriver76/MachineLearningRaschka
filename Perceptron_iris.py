@@ -39,9 +39,6 @@ plt.plot(range(1, len(ppn.errors_) + 1), ppn.errors_,
          marker='o')
 plt.xlabel('Epochen/Durchläufe')
 plt.ylabel('Anzahl der Updates')
-plt.show()
-
-
-
+plt.show
 
 

@@ -30,8 +30,7 @@ class Perceptron(object):
         self.eta = eta
         self.n_iter = n_iter
         
-        
-    def fit(self, X, y):
+    def fit(self, X, y):        
         """Anpassen an die Trainingsdaten
         
         Parameter
@@ -51,14 +50,14 @@ class Perceptron(object):
         
         for _ in range(self.n_iter):
             errors = 0
-            for xi, target in zip(X, y):
+            for xi, target in zip(X, y):                
                 update = self.eta * (target - \
                                      self.predict(xi))
                 self.w_[1:] += update * xi
                 self.w_[0] += update
                 errors += int(update != 0.0)
             self.errors_.append(errors)
-            return self
+        return self
         
     def net_input(self, X):
         """Nettoeingabe berechnen"""
@@ -68,8 +67,7 @@ class Perceptron(object):
         """Klassenbezeichnung zurückgeben"""
         return np.where(self.net_input(X) >= 0.0, 1, -1)
     
-        
-    
+
             
 
     
