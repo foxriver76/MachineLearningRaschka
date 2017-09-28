@@ -9,7 +9,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import Perceptron as percept
-from matplotlib.colors import ListedColormap
+import plot_decision_regions as decision
+
 
 """Reading the data"""
 df = pd.read_csv('https://archive.ics.uci.edu/ml/'
@@ -29,7 +30,7 @@ plt.scatter(X[50:, 0], X[50:, 1],
 plt.xlabel('Länge des Kelchblattes [cm]')
 plt.ylabel('Länge des Blütenblattes [cm]')
 plt.legend(loc='upper left')
-plt.show
+plt.show()
 
 
 """new Perceptron"""
@@ -39,6 +40,10 @@ plt.plot(range(1, len(ppn.errors_) + 1), ppn.errors_,
          marker='o')
 plt.xlabel('Epochen/Durchläufe')
 plt.ylabel('Anzahl der Updates')
-plt.show
+plt.show()
 
-
+decision.plot_decision_regions(X, y, classifier = ppn)
+plt.xlabel('Länge des Kelchblattes [cm]')
+plt.ylabel('Länge des Blütenblattes [cm]')
+plt.legend(loc='upper left')
+plt.show()
