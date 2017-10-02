@@ -35,3 +35,10 @@ ax[1].set_xlabel('Epochen')
 ax[1].set_ylabel('log(Summe quadrierter Abweichungen)')
 ax[1].set_title('Adaline - Lernrate 0.0001')
 plt.show()
+
+"""Standardization of data to mean = 0 std = 1"""
+X_std = np.copy(X)
+X_std[:, 0] = (X[:, 0] - X[:, 0].mean()) / X[:, 0].std()
+X_std[:, 1] = (X[:, 1] - X[:, 1].mean()) / X[:, 1].std()
+
+"""Training Adaline again with standardized data and learning rate eta = 0.01"""
