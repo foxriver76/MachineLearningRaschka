@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import AdalineGD as ada
 import numpy as np
 import pandas as pd
+import plot_decision_regions as pdr
 
 """Reading the data"""
 df = pd.read_csv('https://archive.ics.uci.edu/ml/'
@@ -42,3 +43,17 @@ X_std[:, 0] = (X[:, 0] - X[:, 0].mean()) / X[:, 0].std()
 X_std[:, 1] = (X[:, 1] - X[:, 1].mean()) / X[:, 1].std()
 
 """Training Adaline again with standardized data and learning rate eta = 0.01"""
+adaline = ada.AdalineGD(n_iter=15, eta=0.01)
+adaline.fit(X_std, y)
+pdr.plot_decision_regions(X_std, y, classifier = adaline)
+plt.title('Adaline - Gradientenverfahren')
+plt.xlabel('Länge des Kelchblattes [standardisiert]')
+plt.ylabel('Länge des Blütenblattes [standardisiert]')
+plt.legend(loc='upper left')
+plt.show()
+
+plt.plot(range(1, len(adaline.cost_) + 1),
+         adaline.cost_, marker='o')
+plt.xlabel('Epochen')
+plt.ylabel('Summe quadrierter Abweichungen')
+plt.show()
