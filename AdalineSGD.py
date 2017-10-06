@@ -32,7 +32,7 @@ class AdalineSGD(object):
         (Durchmischen/Initialisierung der Gewichtungen)
         
     """
-    def ___init___(self, eta=0.01, n_iter=10,
+    def __init__(self, eta=0.01, n_iter=10,
                    shuffle=True, random_state=None):
         self.eta = eta
         self.n_iter = n_iter
@@ -59,7 +59,7 @@ class AdalineSGD(object):
         self : object
         
         """
-        self.initalize_weights(X.shape[1])
+        self._initialize_weights(X.shape[1])
         self.cost_ = []
         for i in range(self.n_iter):
             if self.shuffle:
