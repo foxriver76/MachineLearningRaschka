@@ -7,11 +7,13 @@ Created on Sun Oct  8 19:30:51 2017
 """
 
 from sklearn import datasets
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Perceptron
 from sklearn.metrics import accuracy_score
+import numpy as np
+import plot_decision_regions as pdr
+import matplotlib.pyplot as plt
 
 """import iris dataset and splitting data"""
 iris = datasets.load_iris()
@@ -40,3 +42,19 @@ print('Fehlklassifizierte Exemplare: %d' \
 
 """evaluation via percentage of correct classified objects"""
 print('Korrektklassifizierungsrate: %.2f' % accuracy_score(y_test, y_pred))
+
+"""Plotten der Decision Regions"""
+X_combined_std = np.vstack((X_train_std, X_test_std))
+y_combined = np.hstack((y_train, y_test))
+pdr.plot_decision_regions(X=X_combined_std,
+                          y=y_combined,
+                          classifier=ppn,
+                          test_idx=range(105,150))
+plt.xlabel('Länge des Blütenblattes [standardisiert]')
+plt.ylabel('Breite desBlütenblattes [standardisiert]')
+plt.legend (loc='upper left')
+plt.show()
+
+
+        
+        
