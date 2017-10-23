@@ -12,6 +12,7 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 from plot_decision_regions import plot_decision_regions
 import matplotlib.pyplot as plt
+from sklearn.svm import SVC
 
 """import iris dataset and splitting data"""
 iris = datasets.load_iris()
@@ -26,8 +27,6 @@ sc.fit(X_train)
 X_train_std = sc.transform(X_train)
 X_test_std = sc.transform(X_test)
 
-
-from sklearn.svm import SVC
 svm = SVC(kernel='linear', C=1.0, random_state=0)
 svm.fit(X_train_std, y_train)
 
