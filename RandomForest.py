@@ -6,7 +6,6 @@ Created on Mon Oct 30 16:34:14 2017
 @author: moritz
 """
 
-from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import datasets
