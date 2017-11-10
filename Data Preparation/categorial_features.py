@@ -9,6 +9,7 @@ Created on Wed Nov  8 21:22:47 2017
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
 
 """Dataframe mit nominalen (color), ordinalem (Größe) und numersichen (price) Feature"""
 df = pd.DataFrame([
@@ -42,3 +43,15 @@ inv_class_mapping = {v: k for k, v in class_mapping.items()}
 class_le = LabelEncoder()
 y = class_le.fit_transform(df['classlabel'].values)
 #print(class_le.inverse_transform(y))
+
+"""One Hot Encoding für nominale Merkmale"""
+X = df[['color', 'size', 'price']].values
+color_le = LabelEncoder()
+X[:, 0] = color_le.fit_transform(X[:, 0])
+
+#So wird jedoch nominalen Features ein Rang gegeben --> deshalb One Hot Encoding
+ohe = OneHotEncoder(categorical_features=[0])
+ohe.fit_transform(X).toarray() #toarray, oder im ohe sparse=False angeben
+
+#oder get dummies nutzen um alle Zeichenketten zu One Hot Encoden
+print(pd.get_dummies(df[['price', 'color', 'size']]))
