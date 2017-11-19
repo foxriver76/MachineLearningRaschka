@@ -44,7 +44,10 @@ class SBS():
                 
             best = np.argmax(scores)
             self.indices_ = subsets[best]
-            self.subsets_.append(scores[best])
+            self.subsets_.append(self.indices_)
+            dim -= 1
+            
+            self.scores_.append(scores[best])
         self.k_score_ = self.scores_[-1]
         return self
     
