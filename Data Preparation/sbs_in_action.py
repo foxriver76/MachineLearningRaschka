@@ -53,3 +53,27 @@ plt.xlabel('Anzahl der Merkmale')
 plt.grid()
 plt.show()
 
+"""alle gut performanden Indizes erfahren"""
+k5 = list(sbs.subsets_[8])
+print(df_wine.columns[1:][k5])
+
+"""knn Leistung beurteilen"""
+knn.fit(X_train_std, y_train)
+
+print('Korrektklassifizierungsrate Training:', 
+      knn.score(X_train_std, y_train))
+
+print('Korrektklassifizierungsrate Test:', 
+      knn.score(X_test_std, y_test))
+
+#eventuell leichte ÜBeranpassung
+
+"""Überprüfen mit best performenden Merkmalen"""
+knn.fit(X_train_std[:, k5], y_train)
+
+print('Korrektklassifizierungsrate Training:', 
+      knn.score(X_train_std[:, k5], y_train))
+
+print('Korrektklassifizierungsrate Test:', 
+      knn.score(X_test_std[:, k5], y_test))
+
