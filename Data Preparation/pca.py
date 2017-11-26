@@ -19,7 +19,7 @@ X_train, X_test, y_train, y_test = \
                      test_size=0.3, random_state=0)
 sc = StandardScaler()
 X_train_std = sc.fit_transform(X_train)    
-X_test_std = sc.fit(X_test)
+X_test_std = sc.transform(X_test)
 
 cov_mat = np.cov(X_train_std.T)
 eigen_vals, eigen_vecs = np.linalg.eig(cov_mat)
