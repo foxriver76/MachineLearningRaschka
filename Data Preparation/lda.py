@@ -9,11 +9,8 @@ Created on Tue Nov 28 20:08:41 2017
 import pandas as pd 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
 import numpy as np
-from Classifier.plot_decision_regions import plot_decision_regions
-from sklearn.linear_model import LogisticRegression
-from sklearn.decomposition import PCA
+
 
 df_wine = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data', header=None)
 X, y = df_wine.iloc[:, 1:].values, df_wine.iloc[:, 0].values
@@ -71,3 +68,14 @@ for i, mean_vec in enumerate(mean_vecs):
 print('Streumatrix für die Streuung zwischen Klassen: %sx%s'
       % (S_B.shape[0], S_B.shape[1]))
     
+"""Eigenwertproblem der Matrix lösen"""
+eigen_vals, eigen_vecs = \
+    np.linalg.eig(np.linalg.inv(S_W).dot(S_B))
+    
+eigen_pairs = [(np.abs(eigen_vals[i]), eigen_vecs[:, i])
+    for i in range(len(eigen_vals))]
+eigen_pairs = sorted(eigen_pairs,
+                     key=lambda k:k[0], reverse=True)
+print('Eigenwerte in absteigender Reihenfolge:\n')
+for eigen_val in eigen_pairs:
+    print(eigen_val[0])
