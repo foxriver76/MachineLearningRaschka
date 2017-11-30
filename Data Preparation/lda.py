@@ -10,7 +10,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 df_wine = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data', header=None)
 X, y = df_wine.iloc[:, 1:].values, df_wine.iloc[:, 0].values
@@ -79,3 +79,21 @@ eigen_pairs = sorted(eigen_pairs,
 print('Eigenwerte in absteigender Reihenfolge:\n')
 for eigen_val in eigen_pairs:
     print(eigen_val[0])
+    
+tot = sum(eigen_vals.real)
+discr = [(i / tot) for i in sorted(eigen_vals.real,
+         reverse=True)]
+cum_discr = np.cumsum(discr)
+plt.bar(range(1, 14), discr, alpha=0.5, align='center',
+        label='Individuelle Unterschiedbarkeit')
+plt.step(range(1, 14), cum_discr, alpha=0.5, where='mid',
+        label='Kumulative Unterschiedbarkeiten')
+plt.xlabel('Lineare Diskriminanten')
+plt.ylim([-0.1, 1.1])
+plt.legend(loc='best')
+plt.show()
+
+"""Transofrmationsmatrix W erstellen"""
+w = np.hstack((eigen_pairs[0][1][:, np.newaxis].real, 
+               eigen_pairs[1][1][:, np.newaxis].real))
+print('Matrix W:\n', w)
