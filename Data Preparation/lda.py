@@ -97,3 +97,16 @@ plt.show()
 w = np.hstack((eigen_pairs[0][1][:, np.newaxis].real, 
                eigen_pairs[1][1][:, np.newaxis].real))
 print('Matrix W:\n', w)
+
+"""Daten in Merkmalsraum projizieren X'=X*W"""
+X_train_lda = X_train_std.dot(w)
+colors = ['r', 'b', 'g']
+markers = ['s', 'x', 'o']
+for l, c, m in zip(np.unique(y_train), colors, markers):
+    plt.scatter(X_train_lda[y_train==l, 0] * (-1),
+                X_train_lda[y_train==l, 1] * (-1),
+                c=c, label=l, marker=m)
+plt.xlabel('LD 1')
+plt.ylabel('LD 2')
+plt.legend(loc='upper right')
+plt.show()
