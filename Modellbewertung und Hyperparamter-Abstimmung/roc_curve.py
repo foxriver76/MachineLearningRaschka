@@ -11,7 +11,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split, StratifiedKFold
 import matplotlib.pyplot as plt
-from sklearn.metrics import roc_curve, auc, roc_auc_score, accuracy_score
+from sklearn.metrics import roc_curve, auc, roc_auc_score, accuracy_score, \
+make_scorer, precision_score
 from scipy import interp
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
@@ -89,3 +90,9 @@ print('ROC AUC: %.3f'
       % roc_auc_score(y_true=y_test, y_score=y_pred2))
 print('Korrektklassifizierungsrate: %.3f'
       % accuracy_score(y_true=y_test, y_pred=y_pred2))
+
+"""Für Multiklassen-Klassifizierung:"""
+pre_scorer = make_scorer(score_func=precision_score,
+                         pos_label=1,
+                         greater_is_better=True,
+                         average='micro')
