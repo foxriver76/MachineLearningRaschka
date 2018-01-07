@@ -11,7 +11,6 @@ from sklearn.base import BaseEstimator, ClassifierMixin, clone
 from sklearn.prepprocessing import LabelEncoder
 from sklearn.externals import six
 from sklearn.pipeline import _name_estimators
-import operator
 
 
 
@@ -94,8 +93,75 @@ class MajorityVoteClassifier(BaseEstimator,
                               self.labelenc_.transform(y))
         self.classifiers_.append(fitted_clf)
         return self
+
+def predict(self, X):
+    """Klassenbezeichnung für X vorhersagen.
+
+    Parameter
+    ---------
+    X : {Array-artige, dünnbesetzte Matrix},
+        Shape = [n_samples, n_features]
+        Matrix der Trainingsobjekte
     
+    Rückgabewert
+    ------------
+    maj_vote : Array-artig, shape = [n_samples]
+        Vorhergesagte Klassenbezeichnung
+    """
+    
+    if self.vote == 'probability':
+        maj_vote = np.argmax(self.predict_proba(X),
+                             axis=1)
+    else: # vote is 'classlabel'
+            
+        # Resultate der clf.predict-Aufrufe ermitteln
+        predictions = np.asarray([clf.predict(X)
+            for clf in 
+            self.classifiers_]).T
+        maj_vote = np.apply_along_axis(
+                lambda x:
+                    np.argmax(np.bincount(x,
+                                          weights=self.weights)),
+                                          axis=1,
+                                          arr=predictions)
+    maj_vote = self.labelenc_.inverse_transform(maj_vote)
+    return maj_vote
         
-   
+def predict_proba(self, X):
+    """Klassenwahrscheinlichkeiten für X vorhersagen
     
-                          
+    Parameter
+    ---------
+    X: {Array-artige, dünnbesetzte Matrix},
+        Shape = [n_samples, n_Features]
+        Trainingsvektoren; n_samples ist die Anzahl der
+        Objekte und n_features die Anzahl der Merkmale
+        
+    Rückgabewert
+    ------------
+    avg_proba: Array-artig
+        shape = [n_samples, n_classes]
+        Gewichtete durchschnittliche Wahrscheinlichkeit
+        für jede Klasse pro Objekt
+    """
+    
+    probas = np.asarray([clf.predict_proba(X)
+        for clf in self.classifiers_])
+    avg_proba = np.average(probas, 
+                           axis=0, weights=self.weights)
+    return avg_proba
+
+def get_params(self, deep=True):
+    """Klassifizierer-Parameternamen für Rastersuche"""                          
+    
+    if not deep:
+        return super(MajorityVoteClassifier, 
+                     self).get_params(deep=False)
+    else:
+        out = self.named_classifiers.copy()
+        for name, step in\
+                six.iteritems(self.named_classifiers):
+            for key, value in six.iteritems(
+                    step.get_params(deep=True)):
+                out['%s__%s' % (name, key)] = value
+        return out
