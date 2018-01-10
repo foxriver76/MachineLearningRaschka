@@ -92,7 +92,7 @@ class MajorityVoteClassifier(BaseEstimator,
         for clf in self.classifiers:
             fitted_clf = clone(clf).fit(X,
                               self.labelenc_.transform(y))
-        self.classifiers_.append(fitted_clf)
+            self.classifiers_.append(fitted_clf)
         return self
 
     def predict(self, X):
