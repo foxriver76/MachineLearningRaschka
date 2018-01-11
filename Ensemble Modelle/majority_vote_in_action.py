@@ -16,6 +16,8 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 from mehrheitsentscheidungsklassifizierer import MajorityVoteClassifier
 from sklearn.metrics import roc_curve, auc
 import matplotlib.pyplot as plt
+from itertools import product
+import numpy as np
 
 
 iris = datasets.load_iris()
@@ -100,4 +102,47 @@ plt.grid()
 plt.xlabel('Falsch-Positiv-Rate')
 plt.ylabel('Richtig-Positiv-Rate')
 plt.show()
+
+"""Plotten der Entscheidungsbereiche"""
+sc = StandardScaler()
+X_train_std = sc.fit_transform(X_train)
+
+x_min = X_train_std[:, 0].min() - 1
+x_max = X_train_std[:, 0].max() + 1 
+y_min = X_train_std[:, 1].min() - 1
+y_max = X_train_std[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1),
+                     np.arange(y_min, y_max, 0.1))
+f, axarr = plt.subplots(nrows=2, ncols=2,
+                        sharex='col',
+                        sharey='row',
+                        figsize=(7,5))
+for idx, clf, tt in zip(product([0, 1], [0, 1]),
+                        all_clf, clf_labels):
+    clf.fit(X_train_std, y_train)
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    axarr[idx[0], idx[1]].contourf(xx, yy, Z, alpha=0.3)
+    axarr[idx[0], idx[1]].scatter(X_train_std[y_train==0, 0],
+            X_train_std[y_train==0, 1],
+            c='blue',
+            marker='^',
+            s=50)
+    axarr[idx[0], idx[1]].scatter(X_train_std[y_train==1, 0],
+            X_train_std[y_train==1, 1],
+            c='red',
+            marker='o',
+            s=50)
+    axarr[idx[0], idx[1]].set_title(tt)
+    
+plt.text(-3.5, -4.5, 
+         s='Breite des Kelchblattes [standardisiert]',
+         ha='center', va='center', fontsize=12)
+plt.text(-10.5, 4.5,
+         s='Länge des Blütenblattes [standardisiert]',
+         ha='center', va='center', 
+         fontsize=12, rotation=90)
+plt.show()
+    
+  
         
