@@ -6,6 +6,7 @@ Created on Sun Jan  7 12:18:27 2018
 @author: moritz
 """
 
+from sklearn.model_selection import GridSearchCV
 from sklearn import datasets
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.linear_model import LogisticRegression
@@ -144,5 +145,26 @@ plt.text(-10.5, 4.5,
          fontsize=12, rotation=90)
 plt.show()
     
-  
+"""Parameter holen zum optimieren"""
+print(mv_clf.get_params())
+
+"""C der Logistic Regression optimieren sowie Rastersuche für DecisionTree"""
+params = {'decisiontreeclassifier__max_depth': [1, 2],
+          'pipeline-1__clf__C': [0.001, 0.1, 100.0]}
+grid = GridSearchCV(estimator=mv_clf,
+                    param_grid=params,
+                    cv=10,
+                    scoring='roc_auc')
+grid.fit(X_train, y_train)
+
+"""Optimale Parameter ausgeben"""
+cv_keys = ('mean_test_score', 'std_test_score', 'params')
+for r, _ in enumerate(grid.cv_results_['mean_test_score']):
+    print("%0.3f +/- %0.2f %r"
+              % (grid.cv_results_[cv_keys[0]][r],
+                 grid.cv_results_[cv_keys[1]][r] / 2.0,
+                 grid.cv_results_[cv_keys[2]][r]))
+    
+print('Beste Parameter %s' % grid.best_params_)
+print('Korrektklassifizierungsrate: %.2f' % grid.best_score_)
         
