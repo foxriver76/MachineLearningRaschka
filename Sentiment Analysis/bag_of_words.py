@@ -9,6 +9,7 @@ Created on Tue Jan 23 14:52:40 2018
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+import re
 
 df = pd.read_csv('./movie_data.csv')
 
@@ -35,3 +36,21 @@ tfidf = TfidfTransformer()
 np.set_printoptions(precision=2)
 print(tfidf.fit_transform(
         count.fit_transform(docs)).toarray())
+
+"""Textdaten bereinigen"""
+df.loc[0, 'review'][-50:]
+
+def preprocessor(text):
+    text = re.sub('<[^>]*>', '', text)
+    emoticons = re.findall('(?::|;|=)(?:-)?(?:\)|\(|D|P)', text)
+    text = re.sub('[\W]+', ' ', text.lower()) +\
+        ' '.join(emoticons).replace('-', '')
+    return text
+
+print(preprocessor(df.loc[0, 'review'][-50:]))
+print(preprocessor("</a>This :) is :( a test :-)!"))
+    
+"""Bereinigen aller Datensätze"""
+df['review'] = df['review'].apply(preprocessor)
+
+"""Dokumente in Token zerlegen"""
