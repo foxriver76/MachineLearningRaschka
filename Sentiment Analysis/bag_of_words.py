@@ -10,6 +10,10 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 import re
+from nltk.stem.porter import PorterStemmer
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 
 df = pd.read_csv('./movie_data.csv')
 
@@ -54,3 +58,20 @@ print(preprocessor("</a>This :) is :( a test :-)!"))
 df['review'] = df['review'].apply(preprocessor)
 
 """Dokumente in Token zerlegen"""
+def tokenizer(text):
+    return text.split()
+
+print(tokenizer('runners like running and thus they run'))
+
+"""Stemming - Reduzieren auf Wortstamm"""
+porter = PorterStemmer()
+
+def tokenizer_porter(text):
+    return [porter.stem(word) for word in text.split()]
+
+print(tokenizer_porter('runners like running and thus they run'))
+
+"""Stoppwörter entfernen"""
+stop = stopwords.words('english')
+print([w for w in tokenizer_porter('a runner likes running and runs a lot') \
+    [-10:] if w not in stop])
