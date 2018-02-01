@@ -13,6 +13,8 @@ stop = stopwords.words('english')
 from sklearn.feature_extraction.text import HashingVectorizer
 from sklearn.linear_model import SGDClassifier
 import pyprind
+import pickle
+import os
 
 """Bereinigen der Movie-Daten mittels Tokenizer"""
 def tokenizer(text):
@@ -71,3 +73,4 @@ X_test = vect.transform(X_test)
 print('Korrektklassifizierungsrate: %.3f' % clf.score(X_test, y_test))
 
 clf = clf.partial_fit(X_test, y_test)
+
