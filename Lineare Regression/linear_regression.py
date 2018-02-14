@@ -7,6 +7,8 @@ Created on Tue Feb 13 09:04:30 2018
 """
 
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 """Lebensbedingungen-Daten lesen"""
 df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/' \
@@ -18,3 +20,11 @@ df.columns = ['CRIM', 'ZN', 'INDUS', 'CHAS',
               'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
 
 print(df.head())
+
+"""Visualisierung mittels explorativer Datenanalyse - EDA"""
+sns.set(style='whitegrid', context='notebook')
+cols = ['LSTAT', 'INDUS', 'NOX', 'RM', 'MEDV']
+sns.pairplot(df[cols], size=2.5)
+plt.show()
+
+"""Korrelationsmatrix berechnen und als Heatmap visualisieren"""
