@@ -9,6 +9,7 @@ Created on Tue Feb 13 09:04:30 2018
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 """Lebensbedingungen-Daten lesen"""
 df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/' \
@@ -28,3 +29,14 @@ sns.pairplot(df[cols], size=2.5)
 plt.show()
 
 """Korrelationsmatrix berechnen und als Heatmap visualisieren"""
+cm = np.corrcoef(df[cols].values.T)
+sns.set(font_scale=1.5)
+hm = sns.heatmap(cm,
+                 cbar=True,
+                 annot=True,
+                 square=True,
+                 fmt='.2f',
+                 annot_kws={'size': 15},
+                 yticklabels=cols,
+                 xticklabels=cols)
+plt.show()
