@@ -45,3 +45,13 @@ lin_regplot(X_std, y_std, lr)
 plt.xlabel('Durchschnittliche Anzahl der Zimmer [RM] (standardisiert)')
 plt.ylabel('Preis in 1000$ [MEDV] (standardisiert)')
 plt.show()
+
+"""Entstandardisieren von Daten"""
+num_rooms_std = sc_x.transform(np.array([[5.0]]))
+price_std = lr.predict(num_rooms_std)
+print('Preis in 1000$s: %.3f' % sc_y.inverse_transform(price_std))
+
+"""Gewichtungen von y-Achsenabschnitten müssen nicht angepasst
+werden solange Variablen standardisiert sind, siehe:"""
+print('Steigung: %.3f' % lr.w_[1])
+print('Achsenabschnitt %.3f' % lr.w_[0])
