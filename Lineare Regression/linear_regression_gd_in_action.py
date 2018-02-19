@@ -11,6 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+from sklearn.linear_model import LinearRegression
 
 """Lebensbedingungen-Daten lesen"""
 df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/' \
@@ -55,3 +56,15 @@ print('Preis in 1000$s: %.3f' % sc_y.inverse_transform(price_std))
 werden solange Variablen standardisiert sind, siehe:"""
 print('Steigung: %.3f' % lr.w_[1])
 print('Achsenabschnitt %.3f' % lr.w_[0])
+
+"""Linear Regression aus scikit Learn für nicht standardisierte Variablen
+eventuell besser"""
+slr = LinearRegression()
+slr.fit(X, y)
+print('Steigung: %.3f' % slr.coef_[0])
+print('Achsenabschnitt: %.3f' % slr.intercept_)
+
+lin_regplot(X, y, slr)
+plt.xlabel('Durchschnittliche Anzahl der Zimmer [RM]')
+plt.ylabel('Preis in 1000$ [MEDV]')
+plt.show()
