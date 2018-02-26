@@ -10,7 +10,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
 
 """Lebensbedingungen-Daten lesen"""
 df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/' \
@@ -48,3 +48,12 @@ print('Info: bei einem perfekt vorhergesagtem Modell, wären sämtliche Werte '
       'gleich 0 -> keine Abweichung zwischen pred und tatsächlichem Wert.')
 
 """MSE (Mean Squared Error - mittlere quadratische Abweichung) berechnen"""
+print('MSE-Trainingsdaten: %.3f, \n MSE-Testdaten: %.3f' % (
+        mean_squared_error(y_train, y_train_pred),
+        mean_squared_error(y_test, y_test_pred)))
+
+"""R^2 --> Anteil der Varianz der Zielvariablen -> teilweise aussagekräftiger,
+wenn R^2 = 1 --> gibt Modell Daten perfekt wieder"""
+print('R^2 Training: %.3f, R^2 Test: %.3f' % (
+        r2_score(y_train, y_train_pred),
+        r2_score(y_test, y_test_pred)))
