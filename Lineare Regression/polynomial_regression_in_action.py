@@ -39,7 +39,42 @@ y_lin_fit = regr.predict(X_fit)
 linear_r2 = r2_score(y, regr.predict(X))
 
 """Quadratische Anpassung"""
+regr = regr.fit(X_quad, y)
+y_quad_fit = regr.predict(quadratic.fit_transform(X_fit))
+quadratic_r2 = r2_score(y, regr.predict(X_quad))
 
 """Kubische Anpassung"""
+regr = regr.fit(X_cubic, y)
+y_cubic_fit = regr.predict(cubic.fit_transform(X_fit))
+cubic_r2 = r2_score(y, regr.predict(X_cubic))
 
 """Ergebnisse ausgeben"""
+plt.scatter(X, y,
+            label='Trainingsdatenpunkte',
+            color='lightgray')
+plt.plot(X_fit, y_lin_fit,
+         label='Linear (d=1), $R^2=%.2f$'
+         % linear_r2,
+         color='blue',
+         lw=2,
+         linestyle=':')
+plt.plot(X_fit, y_quad_fit,
+         label='Quadratisch (d=2), $R^2=%.2f$'
+         % quadratic_r2,
+         color='red',
+         lw=2,
+         linestyle='-')
+plt.plot(X_fit, y_cubic_fit,
+         label='Kubisch (d=3, $R^2=%.2f$'
+         % cubic_r2,
+         color='green',
+         lw=2,
+         linestyle='--')
+plt.xlabel('% der Bev. mit niedr. Sozialstatus [LSTAT]')
+plt.ylabel('Preis in 1000$ [MEDV]')
+plt.legend(loc='upper right')
+plt.show()
+
+"""Anhang des Plots könnte man denken, dass zwischen log(MEDV) und Quadratwurzel
+von LSTAT ein linearer Zusammenhang besteht, dass ist jetzt zu prüfen"""
+# Merkmale transformieren
