@@ -78,3 +78,25 @@ plt.show()
 """Anhang des Plots könnte man denken, dass zwischen log(MEDV) und Quadratwurzel
 von LSTAT ein linearer Zusammenhang besteht, dass ist jetzt zu prüfen"""
 # Merkmale transformieren
+X_log = np.log(X)
+y_sqrt = np.sqrt(y)
+
+# Merkmale anpassen
+X_fit = np.arange(X_log.min()-1,
+                  X_log.max()+1, 1)[:, np.newaxis]
+regr = regr.fit(X_log, y_sqrt)
+y_lin_fit = regr.predict(X_fit)
+linear_r2 = r2_score(y_sqrt, regr.predict(X_log))
+
+# Ergebnisse ausgeben
+plt.scatter(X_log, y_sqrt,
+            label='Trainingsdatenpunkte',
+            color='lightgray')
+plt.plot(X_fit, y_lin_fit,
+         label='Linear (d=1), $R^2=%.2f$' % linear_r2,
+         color='blue',
+         lw=2)
+plt.xlabel('log(% der Bev. mit niedr. Sozialstatus [LSTAT])')
+plt.ylabel('$\sqrt{Preis \; in \; 1000\$ [MEDV]}$')
+plt.legend(loc='lower left')
+plt.show()
