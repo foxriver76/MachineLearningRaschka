@@ -38,19 +38,29 @@ km = KMeans(n_clusters=3,
 
 y_km = km.fit_predict(X)
 
+"""Plotten der Ergebnisse"""
 plt.scatter(X[y_km==0, 0], X[y_km==0, 1],
             c='b',
-            marker='o',
+            marker='s',
+            label='Cluster 1',
             s=50)
 plt.scatter(X[y_km==1, 0], X[y_km==1, 1],
             c='r',
             marker='o',
+            label='Cluster 2',
             s=50)
 plt.scatter(X[y_km==2, 0], X[y_km==2, 1],
             c='lightgreen',
-            marker='o',
+            marker='v',
+            label='cluster3',
             s=50)
-
+plt.scatter(km.cluster_centers_[:, 0],
+            km.cluster_centers_[:, 1],
+            s=250,
+            marker='*',
+            c='orange',
+            label='Zentroiden')
+plt.legend()
 plt.grid()
 plt.show()
 
