@@ -64,3 +64,6 @@ plt.legend()
 plt.grid()
 plt.show()
 
+
+"""Summe quadrierter Abweichungen zur Evaluation"""
+print('Verzerrung: % .2f' % km.inertia_)
