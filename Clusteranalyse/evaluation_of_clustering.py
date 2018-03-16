@@ -9,7 +9,9 @@ Created on Wed Mar 14 17:05:36 2018
 from sklearn.datasets import make_blobs
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-
+import numpy as np
+from matplotlib import cm
+from sklearn.metrics import silhouette_samples
 
 """Create Sample Data"""
 X, y = make_blobs(n_samples=150,
@@ -30,7 +32,8 @@ km = KMeans(n_clusters=3,
 y_km = km.fit_predict(X)
 
 
-"""Summe quadrierter Abweichungen zur Evaluation"""
+"""Summe quadrierter Abweichungen innerhalb des Clusters
+zur Evaluation -> Verzerrung genannt"""
 print('Verzerrung: % .2f' % km.inertia_)
 
 """Ellenbogenkriterium --> Plotten der Verzerrung für unterschiedliche 
@@ -47,4 +50,36 @@ for i in range(1, 11):
 plt.plot(range(1, 11), distortions, marker='o')
 plt.xlabel('Anzahl der Cluster')
 plt.ylabel('Summe quadrierter Abweichungen - Verzerrung')
+plt.title('Elebogenkriterium k=3 ist ein guter Wert')
 plt.show()
+
+"""Silhouettenkoeffizient durchschnittliche Entfernung zu eigenen Punkten im
+Verhältnis zu durchschnittlichen Entfernung zu Punkten anderer Cluster"""
+y_ax_lower, y_ax_upper = 0, 0
+yticks = []
+cluster_labels = np.unique(y_km)
+n_clusters = cluster_labels.shape[0]
+silhouette_vals = silhouette_samples(X, y_km, metric='euclidean')
+
+for i, c in enumerate(cluster_labels):
+    c_silhouette_vals = silhouette_vals[y_km == c]
+    c_silhouette_vals.sort()
+    y_ax_upper += len(c_silhouette_vals)
+    color = cm.jet(float(i) / n_clusters)
+    plt.barh(range(y_ax_lower, y_ax_upper),
+             c_silhouette_vals,
+             height=1.0,
+             edgecolor='none',
+             color=color)
+    yticks.append((y_ax_lower + y_ax_upper) / 2)
+    y_ax_lower += len(c_silhouette_vals)
+    
+silhouette_avg = np.mean(silhouette_vals)
+plt.axvline(silhouette_avg,
+            color='red',
+            linestyle='--')
+plt.title('Guter Wert für Silhouettenkoeffizient')
+plt.yticks(yticks, cluster_labels + 1)
+plt.ylabel('Cluster')
+plt.xlabel('Silhouettenkoeffizient')
+plt.show() 
