@@ -9,6 +9,7 @@ Created on Tue Mar 20 10:06:55 2018
 import pandas as pd
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
+from scipy.cluster.hierarchy import linkage
 
 
 """Random Daten erzeugen"""
@@ -27,3 +28,25 @@ row_dist = pd.DataFrame(squareform(
 print(row_dist)
 
 """Complete Linkage Agglomerative Clustering"""
+# help(linkage)
+
+"""Ansatz obere Dreiecksmatrix"""
+row_clusters = linkage(pdist(df, metric='euclidean'),
+                       method='complete')
+
+# oder 
+row_clusters = linkage(df.values,
+                       method='complete',
+                       metric='euclidean')
+
+"""Kopplungsmatrix ausgeben"""
+print(pd.DataFrame(row_clusters,
+                   columns=['Zeile 1',
+                            'Zeile 2',
+                            'Distanz',
+                            '# Objekte im Cluster'],
+                    index=['Cluster %d' %(i+1) for i in 
+                           range(row_clusters.shape[0])]))
+
+"""Dendrogramm visualisieren"""
+
