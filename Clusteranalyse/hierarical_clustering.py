@@ -9,7 +9,8 @@ Created on Tue Mar 20 10:06:55 2018
 import pandas as pd
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
-from scipy.cluster.hierarchy import linkage
+from scipy.cluster.hierarchy import linkage, dendrogram, set_link_color_palette
+import matplotlib.pyplot as plt
 
 
 """Random Daten erzeugen"""
@@ -49,4 +50,14 @@ print(pd.DataFrame(row_clusters,
                            range(row_clusters.shape[0])]))
 
 """Dendrogramm visualisieren"""
+set_link_color_palette(['black']) # sonst Dendrogramm bunt
+row_dendr = dendrogram(row_clusters,
+                       labels=labels,
+                       color_threshold=np.inf) # sonst Dendrogramm bunt
+plt.tight_layout()
+plt.ylabel('Euklidische Distanz')
+plt.show()
+print('ID_0 und ID_4 sowie ID_1 und ID_2 sind sich am ähnlichsten')
+
+"""Dendrogramm mit Heatmap verknüpfen"""
 
