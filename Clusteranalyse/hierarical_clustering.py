@@ -60,4 +60,24 @@ plt.show()
 print('ID_0 und ID_4 sowie ID_1 und ID_2 sind sich am ähnlichsten')
 
 """Dendrogramm mit Heatmap verknüpfen"""
+fig = plt.figure(figsize=(8,8), facecolor='white')
+axd = fig.add_axes([0.09, 0.1, 0.2, 0.6])
+row_dendr = dendrogram(row_clusters, orientation='left')
 
+"""Im DF umsortieren nach Cluster Labels"""
+df_rowclust = df.ix[row_dendr['leaves'][::-1]]
+
+"""Heatmap erzeugen und rechts neben Dendrogramm platzieren"""
+axm = fig.add_axes([0.23, 0.1, 0.6, 0.6])
+cax = axm.matshow(df_rowclust,
+                   interpolation='nearest', cmap='hot_r')
+
+"""Aussehen und Zuordnung der Heatmap"""
+axd.set_xticks([])
+axd.set_yticks([])
+for i in axd.spines.values():
+    i.set_visible(False)
+fig.colorbar(cax)
+axm.set_xticklabels([''] + list(df_rowclust.columns))
+axm.set_yticklabels([''] + list(df_rowclust.index))
+plt.show()
