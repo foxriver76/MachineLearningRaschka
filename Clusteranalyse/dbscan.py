@@ -8,7 +8,7 @@ Created on Mon Mar 26 15:32:01 2018
 
 from sklearn.datasets import make_moons
 import matplotlib.pyplot as plt
-from sklearn.cluster import KMeans, AgglomerativeClustering
+from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 
 """Sample Daten erzeugen"""
 X, y = make_moons(n_samples=200,
@@ -54,5 +54,25 @@ ax2.scatter(X[y_ac==1,0],
             s=40,
             label='Cluster 2')
 ax2.set_title('Agglomeratives Clustering')
+plt.legend()
+plt.show()
+
+"""DBSCAN plotten"""
+db = DBSCAN(eps=0.2,
+            min_samples=5,
+            metric='euclidean')
+y_db = db.fit_predict(X)
+plt.scatter(X[y_db==0,0],
+            X[y_db==0,1],
+            c='lightblue',
+            marker='o',
+            s=40,
+            label='Cluster 1')
+plt.scatter(X[y_db==1,0],
+            X[y_db==1,1],
+            c='red',
+            marker='s',
+            s=40,
+            label='Cluster 2')
 plt.legend()
 plt.show()
