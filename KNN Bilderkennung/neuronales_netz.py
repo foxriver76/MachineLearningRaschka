@@ -8,7 +8,7 @@ Created on Tue Apr 10 14:46:57 2018
 
 import numpy as np
 import sys
-import scipy.special.expit as expit
+from scipy.special import expit
 
 class NeuralNetMLP(object):
     """ Feedforward neural network / Multi-layer perceptron classifier.
