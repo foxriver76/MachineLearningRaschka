@@ -11,6 +11,7 @@ from readData import load_mnist
 import matplotlib.pyplot as plt
 import pickle
 import os
+import numpy as np
 
 
 """classifier laden"""
@@ -59,3 +60,27 @@ pickle.dump(nn,
             open(os.path.join(dest, 'neural_net.pkl'), 'wb'),
             protocol=4)
 """
+
+"""Erneut plotten mit Durchschnittswert pro Minibatch plotten"""
+batches = np.array_split(range(len(nn.cost_)), 1000)
+cost_ary = np.array(nn.cost_)
+cost_avgs = [np.mean(cost_ary[i]) for i in batches]
+plt.plot(range(len(cost_avgs)),
+         cost_avgs,
+         color='red')
+plt.ylim([0, 2000])
+plt.ylabel('Wert der Straffunktion')
+plt.xlabel('Epochen')
+plt.tight_layout()
+plt.show()
+
+"""Güte durch Korrektklassifizierungsrate aufzeigen"""
+y_train_pred = nn.predict(X_train)
+acc = np.sum(y_train == y_train_pred, axis=0) / X_train.shape[0]
+print('Korrektklassifizierungsrate Training: %.2f%%' % (acc * 100))
+
+y_test_pred = nn.predict(X_test)
+acc = np.sum(y_test == y_test_pred, axis=0) / X_test.shape[0]
+print('Korrektklassifizierungsrate Test %.2f%%' % (acc * 100))
+
+"""Zahlen ansehen, die dem NN Probleme machen"""
