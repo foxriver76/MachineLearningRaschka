@@ -29,3 +29,47 @@ print('Spaltensumme:', calc_sum(ary))
 ary = np.array([[1, 2, 3], [1, 2, 3]],
                dtype=theano.config.floatX)
 print('Spaltensumme:', calc_sum(ary))
+
+"""Speicherverwaltung Beispiel"""
+
+# Initialisieren
+X = T.fmatrix('x')
+w = theano.shared(np.asarray([[0.0, 0.0, 0.0]],
+                             dtype=theano.config.floatX))
+z = x.dot(w.T)
+update = [[w, w + 1.0]]
+
+# Kompilieren
+net_input = theano.function(inputs=[x],
+                            updates=update,
+                            outputs=z)
+
+# Ausführen
+data = np.array([[1, 2, 3]],
+                dtype=theano.config.floatX)
+
+for i in range(5):
+    print('z%d:' % i, net_input(data))
+    
+"""Durch givens-Parameter Anzahl der Übertragungen zwischen CPU und 
+GPU verringern"""
+
+# Initialisieren
+data = np.array([[1, 2, 3]],
+                dtype=theano.config.floatX)
+x = T.fmatrix('x')
+w = theano.shared(np.asarray([[0.0, 0.0, 0.0]],
+                             dtype=theano.config.floatX))
+z = x.dot(w.T)
+update = [[w, w + 1.0]]
+
+# Kompilieren
+net_input = theano.function(inputs=[],
+                            updates=update,
+                            givens={x: data}, # givens ist ein Dictionary
+                            outputs=z)
+
+# Ausführen
+for i in range(5):
+    print('z:', net_input())
+    
