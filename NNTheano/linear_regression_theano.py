@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue May  1 11:12:39 2018
+Created on Wed May  2 08:09:44 2018
 
 @author: moritz
 """
+
+import theano
+from theano import tensor as T
+import numpy as np
 
