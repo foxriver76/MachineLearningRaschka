@@ -1,3 +1,4 @@
 # ignore Datasets
 **/Sentiment Analysis/aclImdb
 **/KNN Bilderkennung/Data
+**/NNTheano/Data
